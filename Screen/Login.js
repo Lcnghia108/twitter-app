@@ -51,7 +51,9 @@ class Login extends React.Component {
                         />
                     </View>
                 </View>
+
                 <View style={styles.inputArea}>
+                    <Text style={styles.textIntro}> Đăng nhập Twitter </Text>
                     <Text style={styles.captions}>
                         {' '}
                         Tên, số điện thoại hoặc e-mail
@@ -105,6 +107,11 @@ const styles = StyleSheet.create({
         //  width: 200,
         marginBottom: 20,
         fontSize: 18
+    },
+    textIntro: {
+        fontSize: 23,
+        color: 'black',
+        marginVertical: 13
     },
     captions: {
         fontSize: 18,

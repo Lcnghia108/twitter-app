@@ -59,7 +59,7 @@ const TabHome = TabNavigator(
     {
         NewsFeed: { screen: NewsFeed },
         Search: { screen: Search },
-        Notification: { screen: Noti },
+        Notifications: { screen: Noti },
         Inbox: { screen: Inbox }
     },
     {
@@ -73,7 +73,7 @@ const TabHome = TabNavigator(
                 if (routeName === 'Search') {
                     iconName = `ios-search${focused ? '' : '-outline'}`;
                 }
-                if (routeName === 'Notification') {
+                if (routeName === 'Notifications') {
                     iconName = `ios-notifications${focused ? '' : '-outline'}`;
                 }
                 if (routeName === 'Inbox') {
@@ -216,13 +216,7 @@ class Home extends React.Component {
 
         return (
             <DrawerLayoutAndroid renderNavigationView={() => navigationView}>
-                <View
-                    style={{
-                        height: 65,
-                        flexDirection: 'row',
-                        alignItems: 'center'
-                    }}
-                >
+                <View style={styles.topHome}>
                     <TouchableOpacity onPress={() => this.openDrawer}>
                         <Image
                             style={styles.avatarshome}
@@ -277,9 +271,16 @@ const styles = StyleSheet.create({
         borderRadius: 33
     },
     avatarshome: {
-        height: 50,
-        width: 50,
-        borderRadius: 25
+        height: 44,
+        width: 44,
+        borderRadius: 22,
+        marginLeft: 5
+    },
+    topHome: {
+        height: 65,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'white'
     },
     name: {
         fontSize: 22,
