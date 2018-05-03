@@ -1,30 +1,21 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { TabNavigator } from 'react-navigation';
+import { TabNavigator, TabBarBottom } from 'react-navigation';
+import NewsFeed from './NewsFeed';
+import Search from './Search';
+// import Profiles from '../data/Profile';
+import Noti from './Noti';
+import Inbox from './Inbox';
+//import Post from './Post';
 
-class Search extends React.Component {
-    render() {
-        return (
-            <View>
-                <Text> NewsFeed </Text>
-            </View>
-        );
-    }
-}
-class NewsFeed extends React.Component {
-    render() {
-        return (
-            <View>
-                <Text> NewsFeed </Text>
-            </View>
-        );
-    }
-}
 const TabHome = TabNavigator(
     {
         NewsFeed: { screen: NewsFeed },
-        Search: { screen: Search }
+        //   Post: { screen: Post },
+        Search: { screen: Search },
+        Notifications: { screen: Noti },
+        Inbox: { screen: Inbox }
     },
     {
         navigationOptions: ({ navigation }) => ({
@@ -32,23 +23,32 @@ const TabHome = TabNavigator(
                 const { routeName } = navigation.state;
                 let iconName;
                 if (routeName === 'NewsFeed') {
-                    iconName = `ios-information-circle${
-                        focused ? '' : '-outline'
-                    }`;
-                } else if (routeName === 'Search') {
-                    iconName = `ios-options${focused ? '' : '-outline'}`;
+                    iconName = `ios-home${focused ? '' : '-outline'}`;
                 }
-
-                // You can return any component that you like here! We usually use an
-                // icon component from react-native-vector-icons
-                return <Ionicons name={iconName} size={25} color={tintColor} />;
+                if (routeName === 'Search') {
+                    iconName = `ios-search${focused ? '' : '-outline'}`;
+                }
+                if (routeName === 'Notifications') {
+                    iconName = `ios-notifications${focused ? '' : '-outline'}`;
+                }
+                if (routeName === 'Inbox') {
+                    iconName = `ios-mail${focused ? '' : '-outline'}`;
+                }
+                if (routeName === 'Post') {
+                    iconName = `ios-create${focused ? '' : '-outline'}`;
+                }
+                return <Ionicons name={iconName} size={28} color={tintColor} />;
             }
         }),
 
         tabBarOptions: {
-            activeTintColor: 'tomato',
-            inactiveTintColor: 'gray'
+            activeTintColor: '#1DA1F2',
+            inactiveTintColor: '#657786',
+            activeBackgroundColor: 'white',
+            inactiveBackgroundColor: 'white'
         },
+        tabBarComponent: TabBarBottom,
+        tabBarPosition: 'top',
         animationEnabled: true,
         swipeEnabled: true
     }

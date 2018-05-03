@@ -5,98 +5,19 @@ import {
     Image,
     DrawerLayoutAndroid,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableHighlight
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { TabNavigator, TabBarBottom } from 'react-navigation';
-//import { TabHome } from './TabHome';
-//import { NewsFeed } from './NewsFeed';
-//import { Search } from './Search';
-
-const Profile = {
-    name: 'Lưu Chí Nghĩa',
-    ID: 'Exynos_neo',
-    following: '226',
-    follower: '24'
-};
-class Search extends React.Component {
-    render() {
-        return (
-            <View>
-                <Text> Seacrh </Text>
-            </View>
-        );
-    }
-}
-class NewsFeed extends React.Component {
-    render() {
-        return (
-            <View>
-                <Text> NewsFeed </Text>
-            </View>
-        );
-    }
-}
-class Noti extends React.Component {
-    render() {
-        return (
-            <View>
-                <Text> Notification </Text>
-            </View>
-        );
-    }
-}
-class Inbox extends React.Component {
-    render() {
-        return (
-            <View>
-                <Text> Message </Text>
-            </View>
-        );
-    }
-}
-const TabHome = TabNavigator(
-    {
-        NewsFeed: { screen: NewsFeed },
-        Search: { screen: Search },
-        Notifications: { screen: Noti },
-        Inbox: { screen: Inbox }
-    },
-    {
-        navigationOptions: ({ navigation }) => ({
-            tabBarIcon: ({ focused, tintColor }) => {
-                const { routeName } = navigation.state;
-                let iconName;
-                if (routeName === 'NewsFeed') {
-                    iconName = `ios-home${focused ? '' : '-outline'}`;
-                }
-                if (routeName === 'Search') {
-                    iconName = `ios-search${focused ? '' : '-outline'}`;
-                }
-                if (routeName === 'Notifications') {
-                    iconName = `ios-notifications${focused ? '' : '-outline'}`;
-                }
-                if (routeName === 'Inbox') {
-                    iconName = `ios-mail${focused ? '' : '-outline'}`;
-                }
-
-                return <Ionicons name={iconName} size={25} color={tintColor} />;
-            }
-        }),
-
-        tabBarOptions: {
-            activeTintColor: '#1DA1F2',
-            inactiveTintColor: '#AAB8C2',
-            activeBackgroundColor: 'white',
-            inactiveBackgroundColor: 'white'
-        },
-        tabBarComponent: TabBarBottom,
-        tabBarPosition: 'top',
-        animationEnabled: true,
-        swipeEnabled: true
-    }
-);
-
+import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
+import TabHome from './TabHome';
+import NewsFeed from './NewsFeed';
+import Search from './Search';
+import Profiles from '../data/Profile';
+import Noti from './Noti';
+import Inbox from './Inbox';
+import colors from '../Styles/styles';
+import Post from './Post';
 class Home extends React.Component {
     constructor() {
         super();
@@ -115,8 +36,8 @@ class Home extends React.Component {
                         style={styles.avatars}
                         source={require('../assets/image/avaN.jpg')}
                     />
-                    <Text style={styles.name}>{Profile.name}</Text>
-                    <Text style={styles.id}>@{Profile.ID}</Text>
+                    <Text style={styles.name}>{Profiles.name}</Text>
+                    <Text style={styles.id}>@{Profiles.ID}</Text>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -125,12 +46,12 @@ class Home extends React.Component {
                     >
                         <TouchableOpacity>
                             <Text style={styles.follower}>
-                                {Profile.following} Đang theo dõi{' '}
+                                {Profiles.following} Đang theo dõi{' '}
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity>
                             <Text style={styles.following}>
-                                {Profile.follower} Người theo dõi{' '}
+                                {Profiles.follower} Người theo dõi{' '}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -203,6 +124,7 @@ class Home extends React.Component {
                             color="#1DA1F2"
                         />
                     </TouchableOpacity>
+
                     <TouchableOpacity>
                         <Ionicons
                             name="ios-qr-scanner-outline"
@@ -215,12 +137,25 @@ class Home extends React.Component {
         );
 
         return (
-            <DrawerLayoutAndroid renderNavigationView={() => navigationView}>
+            <DrawerLayoutAndroid
+                ref={_drawer => (this.drawer = _drawer)}
+                drawerPosition={DrawerLayoutAndroid.positions.Left}
+                renderNavigationView={() => navigationView}
+            >
                 <View style={styles.topHome}>
                     <TouchableOpacity onPress={() => this.openDrawer}>
                         <Image
                             style={styles.avatarshome}
                             source={require('../assets/image/avaN.jpg')}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate('Post')}
+                    >
+                        <Ionicons
+                            name="ios-create-outline"
+                            size={40}
+                            color="#1DA1F2"
                         />
                     </TouchableOpacity>
                 </View>
@@ -238,14 +173,14 @@ const styles = StyleSheet.create({
     },
     firstnavigationView: {
         borderBottomWidth: 1,
-        borderBottomColor: '#AAB8C2',
+        borderBottomColor: colors.extraLightGray,
         paddingHorizontal: 20,
         paddingBottom: 18,
         paddingTop: 10
     },
     secondnavigationView: {
         borderBottomWidth: 1,
-        borderBottomColor: '#AAB8C2',
+        borderBottomColor: colors.extraLightGray,
         paddingHorizontal: 20,
         paddingBottom: 18,
         paddingTop: 10
@@ -253,10 +188,10 @@ const styles = StyleSheet.create({
     thirdnavigationView: {
         flex: 2,
         borderBottomWidth: 1,
-        borderBottomColor: '#AAB8C2',
+        borderBottomColor: colors.extraLightGray,
         paddingHorizontal: 20,
         paddingBottom: 18,
-        paddingTop: 10
+        paddingTop: 15
     },
     endnavigationView: {
         paddingHorizontal: 20,
@@ -271,40 +206,42 @@ const styles = StyleSheet.create({
         borderRadius: 33
     },
     avatarshome: {
-        height: 44,
-        width: 44,
-        borderRadius: 22,
+        height: 36,
+        width: 36,
+        borderRadius: 18,
         marginLeft: 5
     },
     topHome: {
         height: 65,
+        paddingHorizontal: 12,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
         backgroundColor: 'white'
     },
     name: {
         fontSize: 22,
         marginVertical: 5,
         fontWeight: 'bold',
-        color: 'black'
+        color: colors.Black
     },
     id: {
         fontSize: 17,
-        color: '#AAB8C2',
+        color: colors.darkGray,
         marginBottom: 15
     },
     follower: {
         fontSize: 17,
-        color: '#AAB8C2',
+        color: colors.darkGray,
         marginRight: 25
     },
     following: {
         fontSize: 17,
-        color: '#AAB8C2'
+        color: colors.darkGray
     },
     textsecond: {
         marginVertical: 17,
         fontSize: 20,
-        color: 'black'
+        color: colors.Black
     }
 });

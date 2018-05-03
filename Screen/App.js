@@ -13,6 +13,7 @@ import Login from './Login';
 import SignUp from './SignUp';
 import NewsFeed from './NewsFeed';
 import Search from './Search';
+import Post from './Post';
 
 class LogoTitle extends React.Component {
     render() {
@@ -60,11 +61,24 @@ const App = StackNavigator({
             header: null
         }
     },
+
     NewsFeed: {
-        screen: NewsFeed
+        screen: NewsFeed,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Post: {
+        screen: Post,
+        navigationOptions: {
+            header: null
+        }
     },
     Search: {
-        screen: Search
+        screen: Search,
+        navigationOptions: {
+            header: null
+        }
     }
 });
 export default App;
